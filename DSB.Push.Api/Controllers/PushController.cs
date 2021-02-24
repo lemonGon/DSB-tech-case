@@ -7,13 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace DSB.Push.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class PushController : ControllerBase
     {
         
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult Get()
+        [Route("get")]
+        public IActionResult GetAll()
         {
             return Ok("lorem ipsum");
         }

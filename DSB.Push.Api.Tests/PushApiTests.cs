@@ -17,9 +17,9 @@ namespace DSB.Push.Api.Tests
         }
 
         [Test]
-        public void TestPushControllerGetReturns200()
+        public void TestPushControllerGetAllReturns200()
         {
-            var result = _controller.Get() as OkObjectResult;
+            var result = _controller.GetAll() as OkObjectResult;
             
             Assert.IsNotNull(result);
             Assert.AreEqual(StatusCodes.Status200OK, result.StatusCode);

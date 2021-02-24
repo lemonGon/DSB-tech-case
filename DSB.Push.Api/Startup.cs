@@ -21,6 +21,7 @@ namespace DSB.Push.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Cassandra DB connector
             var cassandraSettings = _configuration.GetSection("CassandraSettings").Get<CassandraSettingsModel>();
             var clusterBuilder = Cluster.Builder()
                 .AddContactPoints(cassandraSettings.ContactPoint)
@@ -30,16 +31,25 @@ namespace DSB.Push.Api
             services.AddSingleton(x => clusterBuilder.Connect(cassandraSettings.KeySpace));
             
             services.AddControllers();
+            
+            //Controllers generate lowercase url
+            services.AddRouting(options => options.LowercaseUrls = true);
+            
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "DSB.Push.Api", Version = "v1"});
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "DSB Push Notification Apis",
+                    Description = "A set of APIs for managing DSB customers' push notifications",
+                    Version = "v1"
+                });
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.IsEnvironment("Test"))
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
