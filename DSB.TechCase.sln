@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSB.Push.Api", "DSB.Push.Api\DSB.Push.Api.csproj", "{534B0DA1-2C5C-4002-9586-DE24321BC78A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{172B7713-9DA7-45EA-BEF9-DA2635A28200}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSB.Push.Api.Tests", "DSB.Push.Api.Tests\DSB.Push.Api.Tests.csproj", "{C7E986CE-30AD-4AFA-81B5-33E6EAE343F9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{534B0DA1-2C5C-4002-9586-DE24321BC78A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{534B0DA1-2C5C-4002-9586-DE24321BC78A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{534B0DA1-2C5C-4002-9586-DE24321BC78A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{534B0DA1-2C5C-4002-9586-DE24321BC78A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7E986CE-30AD-4AFA-81B5-33E6EAE343F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7E986CE-30AD-4AFA-81B5-33E6EAE343F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7E986CE-30AD-4AFA-81B5-33E6EAE343F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7E986CE-30AD-4AFA-81B5-33E6EAE343F9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C7E986CE-30AD-4AFA-81B5-33E6EAE343F9} = {172B7713-9DA7-45EA-BEF9-DA2635A28200}
+	EndGlobalSection
+EndGlobal
