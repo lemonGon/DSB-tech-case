@@ -9,4 +9,9 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\DSB.Push.Repositories\DSB.Push.Repositories.csproj" />
+      <ProjectReference Include="..\DSB.Push.Shared\DSB.Push.Shared.csproj" />
+    </ItemGroup>
+
 </Project>

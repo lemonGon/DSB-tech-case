@@ -5,7 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Cassandra;
-using DSB.Push.Api.Models;
+using DSB.Push.Api.InternalModels;
+using DSB.Push.Repositories;
 
 namespace DSB.Push.Api
 {
@@ -29,6 +30,8 @@ namespace DSB.Push.Api
                 .WithAuthProvider(new PlainTextAuthProvider(cassandraSettings.Username, cassandraSettings.Password))
                 .Build();
             services.AddSingleton(x => clusterBuilder.Connect(cassandraSettings.KeySpace));
+            
+            services.AddScoped<IPushDataRepository, CassandraRepository>();
             
             services.AddControllers();
             

@@ -1,4 +1,4 @@
-namespace DSB.Push.Api.Models
+namespace DSB.Push.Api.InternalModels
 {
     internal class CassandraSettingsModel
     {
