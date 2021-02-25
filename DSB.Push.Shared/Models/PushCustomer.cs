@@ -6,15 +6,15 @@ namespace DSB.Push.Shared.Models
     /// <summary>
     /// A user who can receive push notifications
     /// </summary>
-    public struct PushUser
+    public struct PushCustomer
     {
         /// <summary>
-        /// The unique identifier for this user
+        /// The unique identifier for this customer
         /// </summary>
         [Required]
-        public string Id { get; set; }
+        public int Id { get; set; }
         /// <summary>
-        /// The registered device tokens for this user, all of which can receive push notifications
+        /// The registered device tokens for this customer, all of which can receive push notifications
         /// </summary>
         public List<DeviceToken>DeviceTokens { get; set;  }
     }
