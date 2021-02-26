@@ -19,7 +19,7 @@ namespace DSB.Push.Repositories
         public async Task<PushCustomer?> GetCustomer(int customerId)
         {
             var ps = _session.Prepare(
-                $"SELECT customer_id, device_token" +
+                $"SELECT customer_id, device_token " +
                 $"FROM customers " +
                 $"WHERE customer_id = ?");
             var statement = ps.Bind(customerId);
