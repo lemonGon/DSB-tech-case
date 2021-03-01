@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+using System.Net.Http;
 using System.Threading.Tasks;
-using Cassandra;
 using DSB.Push.Repositories;
 using DSB.Push.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace DSB.Push.Api.Controllers
 {
@@ -30,11 +29,11 @@ namespace DSB.Push.Api.Controllers
         [Route("get")]
         public ActionResult<IEnumerable<DeviceToken>> Get()
         {
-            IEnumerable<DeviceToken> customers;
+            IEnumerable<DeviceToken> deviceTokens;
             
             try
             {
-                customers = _pushDataRepository.GetAllCustomersTokens();
+                deviceTokens = _pushDataRepository.GetAllCustomersTokens();
             }
             catch (NotImplementedException)
             {
@@ -47,11 +46,12 @@ namespace DSB.Push.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
-            return Ok(customers);
+            return Ok(deviceTokens);
         }
 
         /// <summary>
-        /// Gets a customer's token given a customer ID 
+        /// Gets a customer's token given a customer ID
+        /// <param name="customerId">The Customer ID to retrieve</param>
         /// </summary>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -71,6 +71,32 @@ namespace DSB.Push.Api.Controllers
             }
 
             return Ok(customer);
+        }
+        
+        /// <summary>
+        /// Saves a new customer token: customerId -> DeviceToken
+        /// </summary>
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [Route("post/{customerId}")]
+        public async Task<ActionResult<PushCustomer?>> Post(int customerId, [FromBody] DeviceToken deviceToken)
+        {
+            PushCustomer? customer;
+            
+            try
+            {
+                customer = await _pushDataRepository.SaveCustomer(customerId, deviceToken);
+            }
+
+            catch (Exception)
+            {
+                // @todo: perhaps logging? 
+                // log e.Message
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            // @todo inject through HttpClient 
+            return Created("http://localhost", customer);
         }
     }
 }

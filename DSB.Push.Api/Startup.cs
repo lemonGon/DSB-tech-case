@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Cassandra;
+using DSB.Push.Api.Controllers;
 using DSB.Push.Api.InternalModels;
 using DSB.Push.Repositories;
 
@@ -42,7 +44,7 @@ namespace DSB.Push.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "DSB Push Notification Apis",
+                    Title = "DSB Push Notification APIs",
                     Description = "A set of APIs for managing DSB customers' push notifications",
                     Version = "v1"
                 });

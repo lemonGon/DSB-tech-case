@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using DSB.Push.Api.Controllers;
 using DSB.Push.Repositories;
@@ -21,7 +22,7 @@ namespace DSB.Push.Api.Tests
         
         private Mock<IPushDataRepository> _pushDataRepository;
         
-        private readonly PushCustomer _pushCustomer = new()
+        private static readonly PushCustomer PushCustomer = new()
         {
             Id = 1,
             DeviceTokens = new List<DeviceToken>
@@ -29,6 +30,11 @@ namespace DSB.Push.Api.Tests
                 new() { Token = "abcd" }
             }
          };
+
+        private static readonly DeviceToken DeviceToken = new()
+        {
+            Token = "TestToken"
+        };
         
         #endregion
         
@@ -54,9 +60,9 @@ namespace DSB.Push.Api.Tests
         {
             _pushDataRepository.Setup(
                 x => x.GetCustomer(It.IsAny<int>())
-            ).ReturnsAsync(() => _pushCustomer);
+            ).ReturnsAsync(() => PushCustomer);
 
-            var action = await _controller.Get(_pushCustomer.Id);
+            var action = await _controller.Get(PushCustomer.Id);
             var result = action.Result as OkObjectResult;
             
             Assert.IsNotNull(result);
@@ -66,12 +72,12 @@ namespace DSB.Push.Api.Tests
             var customerDeviceTokens = ((PushCustomer)result.Value).DeviceTokens;
             
             Assert.AreEqual(result.StatusCode, StatusCodes.Status200OK);
-            Assert.AreEqual(customerId, _pushCustomer.Id);
+            Assert.AreEqual(customerId, PushCustomer.Id);
             Assert.IsInstanceOf<IEnumerable<DeviceToken>>(customerDeviceTokens);
        }
         
         [Test]
-        [Description("Tests PushController -> Get(customer_id) returns null., which means no customers found with that ID")]
+        [Description("Tests PushController -> Get(customer_id) returns null., which means no customers were found with that ID")]
         [Category("Get User By ID")]
         public async Task TestPushControllerGetCustomerByIdReturnsNull()
         {
@@ -86,6 +92,40 @@ namespace DSB.Push.Api.Tests
             
             Assert.AreEqual(result.StatusCode, StatusCodes.Status200OK);
             Assert.IsNull(result.Value);
+        }
+        
+        [Test]
+        [Description("Tests PushController -> Post(customer_id, deviceToken) returns 201 with a customer object, which means the returned customer has been saved / updated")]
+        [Category("Post customer - device token")]
+        public async Task TestPushControllerPostCustomerToken()
+        {
+            const int customerId = 99999;
+
+            _pushDataRepository.Setup(
+                x => x.SaveCustomer(It.IsAny<int>(), It.IsAny<DeviceToken>())
+            ).ReturnsAsync(() => new PushCustomer()
+            {
+                Id = customerId,
+                DeviceTokens = new List<DeviceToken>()
+                {
+                    DeviceToken
+                }
+            });
+
+            
+            
+            var action = await _controller.Post(customerId, DeviceToken);
+            var result = action.Result as CreatedResult;
+            
+            Assert.IsNotNull(result);
+            
+            Assert.AreEqual(result.StatusCode, StatusCodes.Status201Created);
+            
+            var customerIdResult = ((PushCustomer)result.Value).Id;
+            var customerDeviceTokens = ((PushCustomer)result.Value).DeviceTokens;
+            
+            Assert.AreEqual(customerId, customerIdResult);
+            Assert.IsInstanceOf<IEnumerable<DeviceToken>>(customerDeviceTokens);
         }
 
         [Test]
